@@ -3,8 +3,9 @@
 from django.shortcuts import get_object_or_404
 from django.test import TestCase
 from django.utils.six import BytesIO
-from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
+from rest_framework.renderers import JSONRenderer
+from rest_framework.test import APIClient
 import json
 
 from .serializers import RecipeSerializer
@@ -74,7 +75,6 @@ class RecipesTests(TestCase):
         self.assertEqual(serializer.validated_data['name'], 'testname_recipe1') # OrderedDict
         self.assertTrue(serializer.save())
 
-
     def test_serialization_from_string(self):
         """Should be possible to store recipes from JSON as string using the serializer
         """
@@ -89,7 +89,11 @@ class RecipesTests(TestCase):
         self.assertEqual(recipe4.ingredients, 'cheddar cheese, cheese, green onion')
 
     def test_many_recipe_objects(self):
+        """Should be possible to retrieve multiple recipe objs using the serializer
+        """
         serializer = RecipeSerializer(Recipe.objects.all(), many=True)
         self.assertEqual(len(serializer.data), 3)
 
-
+    def test_json_post(self):
+        client = APIClient()
+        client.post('/notes/', {'title': 'new idea'}, format='json')
