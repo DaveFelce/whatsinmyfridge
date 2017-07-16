@@ -2,6 +2,7 @@
 
 from django.shortcuts import get_object_or_404
 from django.utils.six import BytesIO
+from rest_framework import status
 from rest_framework.parsers import JSONParser
 from rest_framework.renderers import JSONRenderer
 from rest_framework.test import APITestCase
@@ -109,11 +110,13 @@ class RecipesTests(APITestCase):
         """
 
         # Create a new object with a POST to the REST API
-        self.client.post('/recipes/list/', json.loads(self.recipe4_json), format='json')
+        response = self.client.post('/recipes/list/', json.loads(self.recipe4_json), format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         # Test retrieval of the new obj using DB
         recipe4 = get_object_or_404(Recipe, pk=4)
         self.assertEqual(recipe4.url, 'http://cookeatshare.com/recipes/three-in-one-onion-dip-4122')
+        self.assertEqual(Recipe.objects.count(), 4)
 
         # Test retrieval of new obj using GET for list of all objects
         response = self.client.get('/recipes/list/', format='json')
