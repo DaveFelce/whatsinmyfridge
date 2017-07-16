@@ -38,22 +38,20 @@ class RecipesTests(TestCase):
             "url": "http://cookeatshare.com/recipes/three-in-one-onion-dip-4122", \
             "ingredients": "cheddar cheese, cheese, green onion" \
         }'
+        # self.recipe5_json = '{ \
+        #     "name": "Stupid Easy 3 Ingredient Nacho Dip", \
+        #     "url": "http://www.recipezaar.com/Stupid-Easy-3-Ingredient-Nacho-Dip-33914", \
+        #     "ingredients": "cheese, cream cheese, hormel chili", \
+        # }'
 
     def test_serialization_from_stored_recipes(self):
         """Stored recipes should be serialized into JSON using the serializer
         """
 
-        # Create known details for recipes
+        # Create known details for recipes in the database
         setattr(self.recipe1, 'name', 'testname')
-        setattr(self.recipe2, 'url', 'http://www.testurl.com/test')
-        setattr(self.recipe3, 'ingredients', 'cheese, eggs, milk')
         self.recipe1.save()
-        self.recipe2.save()
-        self.recipe3.save()
-
         self.assertEqual(self.recipe1.name, 'testname')
-        self.assertEqual(self.recipe2.url, 'http://www.testurl.com/test')
-        self.assertEqual(self.recipe3.ingredients, 'cheese, eggs, milk')
 
         serializer = RecipeSerializer(self.recipe1)
         json_content = JSONRenderer().render(serializer.data)
@@ -94,6 +92,39 @@ class RecipesTests(TestCase):
         serializer = RecipeSerializer(Recipe.objects.all(), many=True)
         self.assertEqual(len(serializer.data), 3)
 
-    def test_json_post(self):
+    def test_REST_get_for_all_recipes(self):
+        """Test retrieval from the front end, using a Client and GET request
+        """
+
+        # Set an attribute to a known value
+        setattr(self.recipe3, 'name', 'testname_recipe3')
+
+        self.recipe3.save()
         client = APIClient()
-        client.post('/notes/', {'title': 'new idea'}, format='json')
+        response = client.get('/recipes/list/', format='json')
+        data = response.data
+        self.assertEqual(data[2]['name'], 'testname_recipe3')
+
+    def test_json_post_and_retrieval(self):
+        """Test creation using the front end using POST, then retrieve using both
+        DB obj and GET request
+        """
+
+        client = APIClient()
+        # Create a new object with a POST to the REST API
+        client.post('/recipes/list/', json.loads(self.recipe4_json), format='json')
+
+        # Test retrieval of the new obj using DB
+        recipe4 = get_object_or_404(Recipe, pk=4)
+        self.assertEqual(recipe4.url, 'http://cookeatshare.com/recipes/three-in-one-onion-dip-4122')
+
+        # Test retrieval of new obj using GET for list of all objects
+        response = client.get('/recipes/list/', format='json')
+        data_as_ordered_dict = response.data
+        self.assertEqual(data_as_ordered_dict[3]['name'], 'Three In One Onion Dip Recipe')
+
+        # Test retrieval of new obj using GET for single object
+        response = client.get('/recipes/detail/4/', format='json')
+        data_as_dict = response.data
+        self.assertEqual(data_as_dict['ingredients'], 'cheddar cheese, cheese, green onion')
+
