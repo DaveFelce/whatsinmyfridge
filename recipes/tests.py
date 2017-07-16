@@ -1,12 +1,15 @@
 """ Recipes Tests """
 
+from django.shortcuts import get_object_or_404
 from django.test import TestCase
 from django.utils.six import BytesIO
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
+import json
 
 from .serializers import RecipeSerializer
 from model_mommy import mommy
+from .models import Recipe
 import logging
 
 # Get an instance of a logger
@@ -29,7 +32,11 @@ class RecipesTests(TestCase):
         self.recipe1 = mommy.make('recipes.Recipe')
         self.recipe2 = mommy.make('recipes.Recipe')
         self.recipe3 = mommy.make('recipes.Recipe')
-
+        self.recipe4_json = '{ \
+            "name": "Three In One Onion Dip Recipe", \
+            "url": "http://cookeatshare.com/recipes/three-in-one-onion-dip-4122", \
+            "ingredients": "cheddar cheese, cheese, green onion" \
+        }'
 
     def test_serialization_from_stored_recipes(self):
         """Stored recipes should be serialized into JSON using the serializer
@@ -52,12 +59,9 @@ class RecipesTests(TestCase):
         self.assertIsInstance(json_content, bytes)
 
     def test_serialization_from_bytestream(self):
-        """Should be possible to store recipes from JSON using the serializer
+        """Should be possible to store recipes as bytestream from JSON using the serializer
         """
 
-        # Test that content can be saved from bytestream
-        # Easiest was is to take serialized JSON from one of the
-        # test recipes and save it into another
         setattr(self.recipe1, 'name', 'testname_recipe1')
         self.recipe1.save()
         serializer = RecipeSerializer(self.recipe1)
@@ -67,6 +71,25 @@ class RecipesTests(TestCase):
 
         serializer = RecipeSerializer(data=data)
         self.assertTrue(serializer.is_valid())
-        self.assertEqual(serializer.validated_data['name'], 'testname_recipe1')
-        # OrderedDict([('title', ''), ('code', 'print "hello, world"\n'), ('linenos', False), ('language', 'python'), ('style', 'friendly')])
-        # serializer.save()
+        self.assertEqual(serializer.validated_data['name'], 'testname_recipe1') # OrderedDict
+        self.assertTrue(serializer.save())
+
+
+    def test_serialization_from_string(self):
+        """Should be possible to store recipes from JSON as string using the serializer
+        """
+
+        data = json.loads(self.recipe4_json) # Dict
+        serializer = RecipeSerializer(data=data)
+        self.assertTrue(serializer.is_valid())
+        self.assertEqual(serializer.validated_data['name'], 'Three In One Onion Dip Recipe')
+        serializer.save()
+
+        recipe4 = get_object_or_404(Recipe, pk=4)
+        self.assertEqual(recipe4.ingredients, 'cheddar cheese, cheese, green onion')
+
+    def test_many_recipe_objects(self):
+        serializer = RecipeSerializer(Recipe.objects.all(), many=True)
+        self.assertEqual(len(serializer.data), 3)
+
+
