@@ -1,11 +1,10 @@
 """ Recipes Tests """
 
 from django.shortcuts import get_object_or_404
-from django.test import TestCase
 from django.utils.six import BytesIO
 from rest_framework.parsers import JSONParser
 from rest_framework.renderers import JSONRenderer
-from rest_framework.test import APIClient
+from rest_framework.test import APITestCase
 import json
 
 from .serializers import RecipeSerializer
@@ -17,7 +16,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class RecipesTests(TestCase):
+class RecipesTests(APITestCase):
     """ Test Recipes """
 
     def setUp(self):
@@ -100,8 +99,7 @@ class RecipesTests(TestCase):
         setattr(self.recipe3, 'name', 'testname_recipe3')
 
         self.recipe3.save()
-        client = APIClient()
-        response = client.get('/recipes/list/', format='json')
+        response = self.client.get('/recipes/list/', format='json')
         data = response.data
         self.assertEqual(data[2]['name'], 'testname_recipe3')
 
@@ -110,21 +108,20 @@ class RecipesTests(TestCase):
         DB obj and GET request
         """
 
-        client = APIClient()
         # Create a new object with a POST to the REST API
-        client.post('/recipes/list/', json.loads(self.recipe4_json), format='json')
+        self.client.post('/recipes/list/', json.loads(self.recipe4_json), format='json')
 
         # Test retrieval of the new obj using DB
         recipe4 = get_object_or_404(Recipe, pk=4)
         self.assertEqual(recipe4.url, 'http://cookeatshare.com/recipes/three-in-one-onion-dip-4122')
 
         # Test retrieval of new obj using GET for list of all objects
-        response = client.get('/recipes/list/', format='json')
+        response = self.client.get('/recipes/list/', format='json')
         data_as_ordered_dict = response.data
         self.assertEqual(data_as_ordered_dict[3]['name'], 'Three In One Onion Dip Recipe')
 
         # Test retrieval of new obj using GET for single object
-        response = client.get('/recipes/detail/4/', format='json')
+        response = self.client.get('/recipes/detail/4/', format='json')
         data_as_dict = response.data
         self.assertEqual(data_as_dict['ingredients'], 'cheddar cheese, cheese, green onion')
 
