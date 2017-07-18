@@ -36,10 +36,10 @@ class SearchTests(TestCase):
         # Test the ingredients keyword cleanup method
         recipe_search_form = RecipeSearchForm()
         expected_ingredient_keywords = 'one thing two three four'
-        i = '"one. thing",  two, \'three\',four'
-        self.assertEqual(recipe_search_form.cleanup_ingredients(i), expected_ingredient_keywords)
-        i = '"%%% one.  .. & ^ ^^( thing) **** *%   % $£ !",  two, \'three\',four***'
-        self.assertEqual(recipe_search_form.cleanup_ingredients(i), expected_ingredient_keywords)
-        i = '"""one. \'  thing",  " ;;;;  ,,  ;, ; . two, :\'three\',four:";'
-        self.assertEqual(recipe_search_form.cleanup_ingredients(i), expected_ingredient_keywords)
+        ingredients = '"one. thing",  two, \'three\',four'
+        self.assertEqual(recipe_search_form.cleanup_ingredients(ingredients), expected_ingredient_keywords)
+        ingredients = '"%%% one.  .. & ^ ^^( thing) **** *%   % $£ !",  two, \'three\',four***'
+        self.assertEqual(recipe_search_form.cleanup_ingredients(ingredients), expected_ingredient_keywords)
+        ingredients = '"""one. \'  thing",  " ;;;;  ,,  ;, ; . two, :\'three\',four:";'
+        self.assertEqual(recipe_search_form.cleanup_ingredients(ingredients), expected_ingredient_keywords)
 

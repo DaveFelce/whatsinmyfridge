@@ -49,11 +49,11 @@ class RecipeSearchForm(forms.Form):
             context['form'] = self
             return render(request, context['template'], context)
 
-        cleaned_data = {
-            'ingredients': self.cleanup_ingredients(self.cleaned_data.get('ingredients'))
+        query_dict = {
+            'ingredients': self.cleanup_ingredients(self.cleaned_data.get('ingredients')),
+            'reverse': context['reverse'],
+            'page_title': context['page_title']
         }
-        query_dict = cleaned_data.copy()
-        query_dict.update({'reverse': context['reverse'], 'page_title': context['page_title']})
         query_str = urlencode(query_dict)
         search_url = reverse('search:process_request_simple') + '?' + query_str
         return HttpResponseRedirect(search_url)
