@@ -40,11 +40,6 @@ class RecipesTests(APITransactionTestCase):
             "url": "http://cookeatshare.com/recipes/three-in-one-onion-dip-4122", \
             "ingredients": "cheddar cheese, cheese, green onion" \
         }'
-        # self.recipe5_json = '{ \
-        #     "name": "Stupid Easy 3 Ingredient Nacho Dip", \
-        #     "url": "http://www.recipezaar.com/Stupid-Easy-3-Ingredient-Nacho-Dip-33914", \
-        #     "ingredients": "cheese, cream cheese, hormel chili", \
-        # }'
 
     def test_serialization_from_stored_recipes(self):
         """Stored recipes should be serialized into JSON using the serializer
