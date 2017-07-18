@@ -76,13 +76,30 @@ WSGI_APPLICATION = 'whatsinmyfridge.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'whatsinmyfridge',
+        'USER': 'whatsinmyfridge',
+        'PASSWORD': 'Cr33d3nc3',
+        'HOST': 'localhost',
+        'PORT': '5434',
+    },
 }
 
+SEARCH_SERVICE = {
+    'ES_HOST': 'localhost',
+    'ES_PORT': '9200',
+    'ES_USER': 'elastic',
+    'ES_PASSWORD': 'NXo9f3HaPrUq',
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators

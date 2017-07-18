@@ -5,7 +5,7 @@ from django.utils.six import BytesIO
 from rest_framework import status
 from rest_framework.parsers import JSONParser
 from rest_framework.renderers import JSONRenderer
-from rest_framework.test import APITestCase
+from rest_framework.test import APITransactionTestCase
 import json
 
 from .serializers import RecipeSerializer
@@ -17,8 +17,10 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class RecipesTests(APITestCase):
+class RecipesTests(APITransactionTestCase):
     """ Test Recipes """
+
+    reset_sequences = True # So we can check an auto-incremented pk further down
 
     def setUp(self):
         """Set up some commonly needed attributes
@@ -83,7 +85,7 @@ class RecipesTests(APITestCase):
         self.assertEqual(serializer.validated_data['name'], 'Three In One Onion Dip Recipe')
         serializer.save()
 
-        recipe4 = get_object_or_404(Recipe, pk=4)
+        recipe4 = get_object_or_404(Recipe, name='Three In One Onion Dip Recipe')
         self.assertEqual(recipe4.ingredients, 'cheddar cheese, cheese, green onion')
 
     def test_many_recipe_objects(self):
@@ -114,7 +116,7 @@ class RecipesTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         # Test retrieval of the new obj using DB
-        recipe4 = get_object_or_404(Recipe, pk=4)
+        recipe4 = get_object_or_404(Recipe, pk=4) # reset_sequences == True
         self.assertEqual(recipe4.url, 'http://cookeatshare.com/recipes/three-in-one-onion-dip-4122')
         self.assertEqual(Recipe.objects.count(), 4)
 
