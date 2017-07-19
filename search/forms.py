@@ -55,6 +55,6 @@ class RecipeSearchForm(forms.Form):
             'page_title': context['page_title']
         }
         query_str = urlencode(query_dict)
-        search_url = reverse('search:process_request_simple') + '?' + query_str
+        search_url = reverse('search:process_recipe_search') + '?' + query_str
         return HttpResponseRedirect(search_url)
 
