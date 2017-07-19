@@ -1,0 +1,40 @@
+{% load staticfiles %}
+
+                    <!-- Search Functionality -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Search for recipes using ingredients found in your fridge or cupboards!</h3>
+                        </div>
+                        <div class="panel-body">
+                            <!-- Display any errors from previous form submission -->
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert alert-danger">
+                                        <strong>
+                                            {% if message.level == default_message_levels_error and message != "" %}
+                                                {{ message }}
+                                            {% endif %}
+                                        </strong>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            <form class="global-form" name="recipe_search_form" id="recipe_search_form" method="post" action="{{ action }}">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <p>
+                                        {% if form.ingredients.errors %}
+                                            <div class="alert alert-danger">
+                                            {% for error in form.ingredients.errors %}
+                                                <strong>{{ error }}</strong><br/>
+                                            {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                        <label for="ingredients" class="home-label-required">Ingredient keywords</label>
+                                        <input type="text" id="ingredients" name="ingredients" class="form-control" placeholder="beef tomatoes wine thyme" value="{{ form.ingredients.value|default_if_none:"" }}"/>
+                                    </p>
+                                </div>
+                                <button type="submit" class="btn btn-default submit-button">Submit</button>
+                            </form>
+                        </div>
+                        <!-- /.search functionality -->
+                    </div>

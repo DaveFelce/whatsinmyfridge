@@ -3,6 +3,7 @@
 from django.test import TestCase
 
 from services.es_search import RecipeSearch
+from .forms import RecipeSearchForm
 
 class SearchTests(TestCase):
     """ Test searches """
@@ -27,4 +28,18 @@ class SearchTests(TestCase):
         self.assertEqual(len(results), 1)
 
         # self.assertEqual(results.hits.total, 1)
+
+    def test_form(self):
+        """ Test the bits of the form we can for now
+        """
+
+        # Test the ingredients keyword cleanup method
+        recipe_search_form = RecipeSearchForm()
+        expected_ingredient_keywords = 'one thing two three four'
+        ingredients = '"one. thing",  two, \'three\',four'
+        self.assertEqual(recipe_search_form.cleanup_ingredients(ingredients), expected_ingredient_keywords)
+        ingredients = '"%%% one.  .. & ^ ^^( thing) **** *%   % $£ !",  two, \'three\',four***'
+        self.assertEqual(recipe_search_form.cleanup_ingredients(ingredients), expected_ingredient_keywords)
+        ingredients = '"""one. \'  thing",  " ;;;;  ,,  ;, ; . two, :\'three\',four:";'
+        self.assertEqual(recipe_search_form.cleanup_ingredients(ingredients), expected_ingredient_keywords)
 

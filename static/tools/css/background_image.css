@@ -1,0 +1,23 @@
+.bg {
+    /* The image used */
+    background-image: url("/media/global/kitchen_interior.jpeg");
+
+    /* Full height */
+    height: 75%;
+    width: 100%;
+
+    position: absolute;
+    top: 0;
+    right:0;
+    left:0;
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+@media (max-width: 1000px) {
+    .bg {
+        height: 450px;
+    }
+}
