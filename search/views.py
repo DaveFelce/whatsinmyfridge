@@ -5,13 +5,11 @@ from django.contrib import messages
 
 from services.es_search import RecipeSearch
 
-# TODO: set up search app like in EA - in settings etc. does it need model, admin?
-
 class ProcessRecipeSearch(View):
     """ View for processing recipe search form
     """
 
-    def get(self, request, path):
+    def get(self, request):
         """ HTTP Get
         Params:
             request: HTTP request obj passed to class views

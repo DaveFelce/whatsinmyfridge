@@ -3,10 +3,6 @@ from django.views import View
 from django.shortcuts import render
 from django.contrib.messages import get_messages
 from search.forms import RecipeSearchForm
-import logging
-
-# Get an instance of a logger
-logger = logging.getLogger(__name__)
 
 class Home(View):
     """Home page class-based view
