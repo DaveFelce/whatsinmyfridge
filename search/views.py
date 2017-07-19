@@ -25,9 +25,12 @@ class ProcessRecipeSearch(View):
 
         # Nothing found: return to originating page and its form with msg
         if len(recipes) == 0:
-            messages.add_message(request, messages.ERROR, 'No recipes were found for those search criteria')
+            messages.add_message(request, messages.ERROR, 'No recipes were found for those ingredients')
             return HttpResponseRedirect(query_params['reverse'])
 
+
+        # TODO: this is where we create the graph images and store as files, or
+        # however that page said to do it
         # Successful: we've found some recipe results, so render the results page in recipe app
         context = {
             'recipes': recipes,
