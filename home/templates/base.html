@@ -1,0 +1,90 @@
+{% load staticfiles home_tags %}
+{% load bootstrap3 %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>{% if flatpage != None %}{% if flatpage.title %}{{ flatpage.title }}{% endif %}{% else %}{{ page_title }}{% endif %}</title>
+        <!-- Bootstrap Core CSS -->
+        {% bootstrap_css %}
+        <link href="{% static "tools/css/global.css" %}" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        {% block custom_css %}{% endblock %}
+        <!-- Custom CSS Finished -->
+
+        <link href="{% static "tools/jquery-ui-1.12.1/jquery-ui.css" %}" rel="stylesheet">
+    </head>
+    <body>
+        <div class="all-content">
+        <!-- Navigation -->
+            <nav class="navbar navbar-static-top global-navigation" >
+                <div class="container global-navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-nav global-navbar" href="{% url 'home:index' %}">Estate Agency</a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li><a href="{% url 'sale:index' %}">Buy</a></li>
+                            <li><a href="{% url 'rent:index' %}">Rent</a></li>
+                            <li><a href="/pages/sell/">Sell</a></li>
+                            <li><a href="/pages/about/">About</a></li>
+                            <li><a href="/pages/contact/">Contact</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            {% if user.is_authenticated %}
+                                <li><a href="{% url 'logout' %}">Log out</a></li>
+                                <li><a href="{% url 'people:my_profile' %}"><small><em>{{ user.username }}</em></small></a></li>
+                            {% else %}
+                            <li><a href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}">Log in</a></li>
+                            <li><a href="{% url 'people:register' %}">Register</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Page Content -->
+            <div class="page-content">
+                <div class="container">
+                    <div class="bg"></div>
+                </div>
+
+                {% block content %}{% endblock %}
+
+                <div class="container featured-links">
+                {% featured_link %}
+                </div>
+            </div>
+            <!-- Page Content Ends-->
+
+            <footer>
+                <div class="footer global-footer">
+                    <div class="container">
+                        <p>&copy; 2017 Standard Candle Software LTD. All rights reserved. Contact: davefelce@gmail.com</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <!-- jQuery -->
+        <script src="{% static "tools/JQuery-3.1.1-dist/jquery-3.1.1.js" %}"></script>
+        <!-- Bootstrap Core JavaScript -->
+        {% bootstrap_javascript %}
+        <script src="{% static "tools/jquery-ui-1.12.1/jquery-ui.js" %}" type="text/javascript" ></script>
+
+        <!-- Custom Scripts -->
+        {% block custom_scripts %}{% endblock %}
+        <!-- Custom Scripts Finished -->
+
+    </body>
+</html>

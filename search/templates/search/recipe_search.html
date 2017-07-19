@@ -1,0 +1,89 @@
+{% load staticfiles %}
+
+{% block custom_css %}
+    <link href="{% static "search/css/search.css" %}" rel="stylesheet">
+{% endblock %}
+
+                    <!-- Search Functionality -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Quick search</h3>
+                        </div>
+                        <div class="panel-body">
+                            <!-- Display any errors from previous form submission -->
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert alert-danger">
+                                        <strong>
+                                            {% if message.level == default_message_levels_error and message != "" %}
+                                                {{ message }}
+                                            {% endif %}
+                                        </strong>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            <form class="global-form" name="simple_search_form" id="simple_search_form" method="post" action="{{ action }}">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <p>
+                                        {% if form.area.errors %}
+                                            <div class="alert alert-danger">
+                                            {% for error in form.area.errors %}
+                                                <strong>{{ error }}</strong><br/>
+                                            {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                        <label for="area" class="home-label-required">Location:</label>
+                                        <input  type="text" id="area" name="area" class="form-control" placeholder="Search area name or postcode" value="{{ form.area.value|default_if_none:"" }}"/>
+                                    </p>
+                                </div>
+                                <div class="form-group">
+                                    <p>
+                                        {% if form.description.errors %}
+                                            <div class="alert alert-danger">
+                                            {% for error in form.description.errors %}
+                                                <strong>{{ error }}</strong><br/>
+                                            {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    <label for="description">Property description:</label>
+                                    <input type="text" id="description" name="description" class="form-control" placeholder="Search in property descriptions" value="{{ form.description.value|default_if_none:"" }}"/>
+                                    </p>
+                                </div>
+                                <!-- Range slider, low track: -->
+                                <div class="form-group">
+                                    <p>
+                                        {% if form.amount.errors %}
+                                            <div class="alert alert-danger">
+                                            {% for error in form.amount.errors %}
+                                                <strong>{{ error }}</strong><br/>
+                                            {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                        <label for="amount">Price range:</label>
+                                        <input type="text" id="amount" name="amount" maxlength="25" size="25" class="slider-amount">
+                                    </p>
+                                    <div id="slider-range"></div>
+                                </div>
+                                <div class="form-group">
+                                    {% if form.rent_or_sale.errors %}
+                                        <div class="alert alert-danger">
+                                            <strong>{{ form.rent_or_sale.errors }}</strong>
+                                        </div>
+                                    {% endif %}
+                                    <label class="home-label-required"> Please choose property type:</label>
+                                    <br/>
+                                    <div class="home-radio" for="{{ form.rent_or_sale.id_for_label }}">
+                                        <label for="id_rent_or_sale_rent">
+                                            <input id="id_rent_or_sale_rent" name="rent_or_sale" type="radio" value="rent" {% if form.rent_or_sale.value == "rent" or not form.rent_or_sale.value %} checked{% endif %} required /> For rent
+                                        </label>
+                                        <label for="id_rent_or_sale_sale">
+                                            <input id="id_rent_or_sale_sale" name="rent_or_sale" type="radio" value="sale" {% if form.rent_or_sale.value == "sale" %} checked{% endif %} required /> For sale
+                                        </label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-default submit-button">Submit</button>
+                            </form>
+                        </div>
+                        <!-- /.search functionality -->
+                    </div>
