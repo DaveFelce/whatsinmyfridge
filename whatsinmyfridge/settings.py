@@ -31,7 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'home.apps.HomeConfig',
     'recipes.apps.RecipesConfig',
+    'search.apps.SearchConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -63,6 +65,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
+                'django.template.context_processors.media',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -72,6 +75,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'whatsinmyfridge.wsgi.application'
 
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
@@ -160,6 +164,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
+# Where manage.py collectstatic will store static files for deployment
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_deploy')
+# URL for static files, but in debug (development) will auto find in app/static/appname/ dirs
 STATIC_URL = '/static/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# URL for static files, but in debug (development) will auto find in app/media/appname/ dirs
+MEDIA_URL = '/media/'
 
-RECIPES_API_KEY = 'cea1da673225fec29aa3f4127c619129'
+# Additional GLOBAL search dir for static files
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static")
+]
+
