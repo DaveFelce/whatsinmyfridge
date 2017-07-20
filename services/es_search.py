@@ -56,10 +56,11 @@ class RecipeSearch():
 
         # Prepare the required queries to be joined together with boolean operators in search ( &, | )
         q_ingredients = Q("match", ingredients=search_params['ingredients'])
-        q_name = Q("match", name=search_params['ingredients'])  # 'name' will add to score but is not essential
+        # Leave out name for now to keep this simple
+        # q_name = Q("match", name=search_params['ingredients'])  # 'name' will add to score but is not essential
 
         # Prepare the search, using the prepared queries
-        es_search = Search().using(self.client).query(q_ingredients | q_name)
+        es_search = Search().using(self.client).query(q_ingredients)
 
         # Log the query_params and JSON query used
         logger.debug(json.dumps(search_params))

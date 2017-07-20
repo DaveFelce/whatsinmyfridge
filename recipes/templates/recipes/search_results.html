@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block content %}
+    <div class="container index-page">
+        <div class="row vdivide">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">As percentage of ingredients matched</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div>
+                            <embed type="image/svg+xml" src= {{ gauge_chart|safe }} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Search result relevance or 'interest' score</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div>
+                            <embed type="image/svg+xml" src= {{ pie_chart|safe }} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+{% endblock %}
+
+{% block custom_scripts %}
+    <script src="{% static "tools/js/global.js" %}" type="text/javascript" ></script>
+{% endblock %}
