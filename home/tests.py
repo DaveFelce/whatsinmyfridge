@@ -12,6 +12,7 @@ class HomeTests(TestCase):
         response = self.client.get('/')
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "<title>What's in my Fridge</title>")
-        # self.assertContains(response, '')
+        self.assertContains(response, "<title>What&#39;s in my Fridge</title>")
+        self.assertContains(response, '<h3 class="panel-title">Search for recipes using ingredients found in your fridge or cupboards!</h3>')
+        self.assertContains(response, '<p>Contact: davefelce@gmail.com</p>')
 

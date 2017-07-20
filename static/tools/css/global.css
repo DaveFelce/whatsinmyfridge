@@ -272,6 +272,10 @@ p a, p a:hover  {
     color: #842727;
 }
 
+.vertical-offset-75{
+    padding-top:75px;
+}
+
 .vertical-offset-100{
     padding-top:100px;
 }
