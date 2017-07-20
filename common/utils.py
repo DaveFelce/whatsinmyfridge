@@ -16,3 +16,8 @@ class CommonUtils:
         # We know the words are separated by a single whitespace, so split on that
         # lowercase each word and return the list
         return [qw.lower() for qw in regex_whitespace.split(ingredients)]
+
+    def sorted_ingredients_as_csv(ingredients):
+        ingredients = CommonUtils.lc_list_of_ingredients(ingredients)
+        ingredients = ', '.join(sorted(ingredients))
+        return ingredients

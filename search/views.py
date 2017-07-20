@@ -37,7 +37,7 @@ class ProcessRecipeSearch(View):
         for recipe in recipes:
             pie_chart.add({
                 'title': recipe['name'],
-                'tooltip': 'Click on section to visit the page for this recipe',
+                'tooltip': 'Has ingredients: ' + CommonUtils.sorted_ingredients_as_csv(recipe['ingredients']),
             }, [{
                 'value': int(round(recipe['score'] * 100)),
                 'label': recipe['name'],
@@ -45,14 +45,17 @@ class ProcessRecipeSearch(View):
             }])
 
         get_percentage_matched = self._percentage_of_ingredients_matched(query_params['ingredients'])
-        gauge_chart = pygal.SolidGauge(inner_radius=0.70, style=CleanStyle)
+        gauge_chart = pygal.SolidGauge(inner_radius=0.50, style=CleanStyle)
         for recipe in recipes:
-            percentage_matched = get_percentage_matched(
+            (matched_words, percentage_matched) = get_percentage_matched(
                 recipe['ingredients']
             )
             gauge_chart.add({
                 'title': recipe['name'],
-                'tooltip': 'Click on graphic to visit the page for this recipe',
+                'tooltip': 'Has ingredients: '
+                           + CommonUtils.sorted_ingredients_as_csv(recipe['ingredients'])
+                           + ' and you matched: '
+                           + matched_words,
             }, [{
                 'value': percentage_matched, 'max_value': 100,
                 'label': recipe['name'],
@@ -80,9 +83,11 @@ class ProcessRecipeSearch(View):
 
         def get_percentage_matched(recipe_ingredients):
             recipe_ingredients_list = CommonUtils.lc_list_of_ingredients(recipe_ingredients)
-            r_ingredients_set = set(recipe_ingredients_list)
-            intersection_of_sets = qp_ingredients_set.intersection(r_ingredients_set)
-            percentage_matched = (len(intersection_of_sets) / len(r_ingredients_set)) * 100
-            return percentage_matched
+            recipe_ingredients_set = set(recipe_ingredients_list)
+            matched_words_set = qp_ingredients_set.intersection(recipe_ingredients_set)
+            percentage_matched = (len(matched_words_set) / len(recipe_ingredients_set)) * 100
+            percentage_matched = round(percentage_matched, 2)
+            matched_words_str = ', '.join(sorted(list(matched_words_set)))
+            return (matched_words_str, percentage_matched)
 
         return get_percentage_matched

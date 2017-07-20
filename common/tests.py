@@ -29,3 +29,15 @@ class UtilsTests(TestCase):
         self.assertListEqual(CommonUtils.lc_list_of_ingredients(ingredients), expected_ingredient_keywords_list)
         ingredients = 'one thing two three four'
         self.assertListEqual(CommonUtils.lc_list_of_ingredients(ingredients), expected_ingredient_keywords_list)
+
+    def test_sorted_ingredients_as_csv(self):
+        """ Test the creation of a sorted csv string from whitespace separated string
+        """
+
+        expected_ingredients_string = 'four, one, thing, three, two'
+
+        ingredients = 'one thing two three four'
+        self.assertEqual(CommonUtils.sorted_ingredients_as_csv(ingredients), expected_ingredients_string)
+        ingredients = '"%%% one.  .. & ^ ^^( thing) **** *%   % $£ !",  two, \'three\',four***'
+        self.assertEqual(CommonUtils.sorted_ingredients_as_csv(ingredients), expected_ingredients_string)
+
