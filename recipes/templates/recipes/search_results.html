@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block content %}
+    <div class="container index-page">
+        <div class="row">
+            <div class="col-sd-12 col-md-12 col-lg-12 centerme">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Relevance rating</h3>
+                    </div>
+                    <div class="panel-body">
+{#                        {% for recipe in recipes %}#}
+{#                            <p>{{ recipe }}</p>#}
+{#                        {% endfor %}#}
+                        <div class="chart">
+                            <embed type="image/svg+xml" src= {{ bar_chart|safe }} />
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Relevance rating as pie chart</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="chart">
+                            <embed type="image/svg+xml" src= {{ pie_chart|safe }} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+{% endblock %}
+
+{% block custom_scripts %}
+    <script src="{% static "tools/js/global.js" %}" type="text/javascript" ></script>
+{% endblock %}
