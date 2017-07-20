@@ -1,12 +1,10 @@
-import re
 from django import forms
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from urllib.parse import urlencode
 
-regex_whitespace = re.compile(r'\s+')
-regex_non_words = re.compile(r'\W')
+from common.utils import CommonUtils
 
 class RecipeSearchForm(forms.Form):
     """Simple search form config, for validating against
@@ -16,11 +14,6 @@ class RecipeSearchForm(forms.Form):
         super(RecipeSearchForm, self).__init__(*args, **kwargs)
 
     ingredients = forms.CharField(label='Ingredients', max_length=2000, required=True)
-
-    def cleanup_ingredients(self, ingredients):
-        ingredients = regex_non_words.sub(' ', ingredients)
-        stripped_ingredients = ' '.join(regex_whitespace.split(ingredients)).strip()
-        return stripped_ingredients
 
     def process_post(self, request, context):
         """Process the posted recipe search form
@@ -50,7 +43,7 @@ class RecipeSearchForm(forms.Form):
             return render(request, context['template'], context)
 
         query_dict = {
-            'ingredients': self.cleanup_ingredients(self.cleaned_data.get('ingredients')),
+            'ingredients': CommonUtils.cleanup_ingredients(self.cleaned_data.get('ingredients')),
             'reverse': context['reverse'],
             'page_title': context['page_title']
         }
