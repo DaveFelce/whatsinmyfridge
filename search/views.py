@@ -33,7 +33,7 @@ class ProcessRecipeSearch(View):
             return HttpResponseRedirect(query_params['reverse'])
 
         # Success: we have some results, so turn them into graph images for display
-        pie_chart = pygal.Pie(style=CleanStyle)
+        pie_chart = pygal.Pie(width=1000, heigh=1000, style=CleanStyle)
         for recipe in recipes:
             pie_chart.add({
                 'title': recipe['name'],
@@ -45,7 +45,9 @@ class ProcessRecipeSearch(View):
             }])
 
         get_percentage_matched = self._percentage_of_ingredients_matched(query_params['ingredients'])
-        gauge_chart = pygal.SolidGauge(inner_radius=0.50, style=CleanStyle)
+        gauge_chart = pygal.SolidGauge(width=1000, heigh=1000, inner_radius=0.50, style=CleanStyle)
+        percent_formatter = lambda x: '{:.10g}%'.format(x)
+        gauge_chart.value_formatter = percent_formatter
         for recipe in recipes:
             (matched_words, percentage_matched) = get_percentage_matched(
                 recipe['ingredients']
