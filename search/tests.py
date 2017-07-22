@@ -77,6 +77,16 @@ class SearchTests(TestCase):
         self.assertNotIn('eggs', matched_words)
         self.assertEqual(percentage_matched, 33.33)
 
+        # with grouped words, or phrase, mixed case
+        recipe_ingredients4 = 'Cream Cheese, Eggs, Milk'
+        query_params_ingredients = 'cream CHEESE' # The user's search
+        get_percentage_matched = percentage_of_ingredients_matched(query_params_ingredients)
+        (matched_words, percentage_matched) = get_percentage_matched(recipe_ingredients4)
+        self.assertIn('cream', matched_words)
+        self.assertIn('cheese', matched_words)
+        self.assertNotIn('milk', matched_words)
+        self.assertNotIn('eggs', matched_words)
+        self.assertEqual(percentage_matched, 33.33)
 
 
 
