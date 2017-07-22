@@ -34,6 +34,28 @@ class ProcessRecipeSearch(View):
 
         # Success: we have some results, so turn them into graph images for display
         # Create a gauge chart showing what percentage of ingredient keywords we matched, for each match
+        gauge_chart = self.make_gauge_chart(query_params, recipes)
+
+        # Create a pie chart showing how Elasticsearch rated our matching recipes
+        pie_chart = self.make_pie_chart(recipes)
+
+        # Populate context var for rendering, with the charts we've created
+        context = {
+                    'recipes': recipes,
+                    'pie_chart': pie_chart.render_data_uri(),
+                    'gauge_chart': gauge_chart.render_data_uri(),
+                    'page_title': 'Recipe search results',
+                }
+        return render(request, 'recipes/search_results.html', context)
+
+    def make_gauge_chart(self, query_params, recipes):
+        '''
+
+        :param query_params(query dict):
+        :param recipes(list of dicts of hits returned from Elasticsearch):
+        :return(obj): gauge_chart
+        '''
+
         get_percentage_matched = self._percentage_of_ingredients_matched(query_params['ingredients'])
         gauge_chart = pygal.SolidGauge(width=1300, height=1300, inner_radius=0.50, style=CleanStyle)
         percent_formatter = lambda x: '{:.10g}%'.format(x)
@@ -56,7 +78,15 @@ class ProcessRecipeSearch(View):
                 },
             }])
 
-        # Create a pie chart showing how Elasticsearch rated our matching recipes
+        return gauge_chart
+
+    def make_pie_chart(self, recipes):
+        '''
+
+        :param recipes(list of dicts of hits returned from search):
+        :return(obj): pie_chart
+        '''
+
         pie_chart = pygal.Pie(width=1300, height=1300, style=CleanStyle)
         for recipe in recipes:
             pie_chart.add({
@@ -70,14 +100,7 @@ class ProcessRecipeSearch(View):
                 },
             }])
 
-        # Populate context var for rendering, with the charts we've created
-        context = {
-                    'recipes': recipes,
-                    'pie_chart': pie_chart.render_data_uri(),
-                    'gauge_chart': gauge_chart.render_data_uri(),
-                    'page_title': 'Recipe search results',
-                }
-        return render(request, 'recipes/search_results.html', context)
+        return pie_chart
 
     def _percentage_of_ingredients_matched(self, query_params_ingredients):
         '''
