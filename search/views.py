@@ -2,11 +2,13 @@ from django.views import View
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib import messages
+from collections import defaultdict
 import pygal
 from pygal.style import CleanStyle
 
 from services.es_search import RecipeSearch
-from common.utils import lc_list_of_ingredients, sorted_ingredients_as_csv
+from common.utils import lc_list_of_ingredients, sorted_ingredients_as_csv, \
+    split_csv_into_list, split_str_on_whitespace
 
 def percentage_of_ingredients_matched(query_params_ingredients):
     '''
@@ -18,26 +20,35 @@ def percentage_of_ingredients_matched(query_params_ingredients):
     '''
 
     # Get the query params values, which don't change between calls and are hashable
-    # Lower case the list for set comparison with recipe ingredients list
-    query_params_ingredients_list = lc_list_of_ingredients(query_params_ingredients)
-    qp_ingredients_set = set(query_params_ingredients_list)
+    # Lower case the list so they are now separate keywords
+    query_params_ingredients_list = split_str_on_whitespace(query_params_ingredients)
 
     def get_percentage_matched(recipe_ingredients):
         '''
 
-        :param recipe_ingredients(str), from the recipe search
+        :param recipe_ingredients(str), from the hits returned by search
         :return: matched words(str), the percentage matched(float to 2 decimal places)
         '''
-        recipe_ingredients_list = lc_list_of_ingredients(recipe_ingredients)
-        recipe_ingredients_set = set(recipe_ingredients_list)
-        # Get a set intersection of the two lower cased sets
-        matched_words_set = qp_ingredients_set.intersection(recipe_ingredients_set)
+        recipe_ingredients = lc_list_of_ingredients(recipe_ingredients)
+        # Cycle through recipe ingredients, which may contain multi-word phrases like 'black pepper'
+        # and for each of those check whether there's a user's search keyword match: increment the 'hit'
+        # for that recipe ingredient if so.
+        # At the end we can create a set from the dict names to see the overall match of phrases
+        # rather than single words.  This is more accurate.
+        matched_phrases = defaultdict(int)
+        for recipe_ingredient in recipe_ingredients:
+            for ingredient in query_params_ingredients_list:
+                if ingredient in split_str_on_whitespace(recipe_ingredient):
+                    matched_phrases[recipe_ingredient] += 1
+
+        matched_phrases_set = set(matched_phrases.keys())
+        recipe_ingredients_set = set(recipe_ingredients)
         # Calculate the percentage of matches of matched words against the whole recipe ingredients keyword list
-        percentage_matched = (len(matched_words_set) / len(recipe_ingredients_set)) * 100
+        percentage_matched = (len(matched_phrases_set) / len(recipe_ingredients_set)) * 100
         # Round to 2 decimal places
         percentage_matched = round(percentage_matched, 2)
         # return a string of sorted, space delimited matched words
-        matched_words_str = ', '.join(sorted(list(matched_words_set)))
+        matched_words_str = ', '.join(sorted(list(matched_phrases_set)))
         return (matched_words_str, percentage_matched)
 
     return get_percentage_matched
@@ -79,7 +90,7 @@ class ProcessRecipeSearch(View):
                     'pie_chart': pie_chart.render_data_uri(),
                     'gauge_chart': gauge_chart.render_data_uri(),
                     'page_title': 'Recipe search results',
-                }
+        }
         return render(request, 'recipes/search_results.html', context)
 
     def _make_gauge_chart(self, query_params, recipes):

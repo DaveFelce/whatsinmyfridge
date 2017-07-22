@@ -4,7 +4,6 @@ from django.test import TestCase
 
 from services.es_search import RecipeSearch
 from .views import percentage_of_ingredients_matched
-from .forms import RecipeSearchForm
 
 
 class SearchTests(TestCase):
@@ -65,7 +64,7 @@ class SearchTests(TestCase):
         self.assertIn('cheese', matched_words)
         self.assertNotIn('tomatoes', matched_words)
         self.assertNotIn('cumin', matched_words)
-        self.assertEqual(percentage_matched, 60.0) # s/b 60%
+        self.assertEqual(percentage_matched, 60.0)
 
         # with grouped words, or phrase
         recipe_ingredients4 = 'cream cheese, eggs, milk'
@@ -76,7 +75,7 @@ class SearchTests(TestCase):
         self.assertIn('cheese', matched_words)
         self.assertNotIn('milk', matched_words)
         self.assertNotIn('eggs', matched_words)
-        self.assertEqual(percentage_matched, 33.33) # s/b 33.33%
+        self.assertEqual(percentage_matched, 33.33)
 
 
 
