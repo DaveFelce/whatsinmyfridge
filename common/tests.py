@@ -1,5 +1,8 @@
 from django.test import TestCase
-from common.utils import cleanup_ingredients, lc_list_of_ingredients, sorted_ingredients_as_csv
+from common.utils import cleanup_ingredients, \
+    lc_str_of_ingredients, \
+    sorted_ingredients_as_csv, \
+    split_csv_into_list
 
 class UtilsTests(TestCase):
     """ Test common utils """
@@ -27,9 +30,9 @@ class UtilsTests(TestCase):
 
         expected_ingredient_keywords_list = ['one', 'thing', 'two', 'three', 'four']
 
-        self.assertListEqual(lc_list_of_ingredients(self.ingredients2), expected_ingredient_keywords_list)
-        self.assertListEqual(lc_list_of_ingredients(self.ingredients5), expected_ingredient_keywords_list)
-        self.assertListEqual(lc_list_of_ingredients(self.ingredients4), expected_ingredient_keywords_list)
+        self.assertListEqual(lc_str_of_ingredients(self.ingredients2), expected_ingredient_keywords_list)
+        self.assertListEqual(lc_str_of_ingredients(self.ingredients5), expected_ingredient_keywords_list)
+        self.assertListEqual(lc_str_of_ingredients(self.ingredients4), expected_ingredient_keywords_list)
 
     def test_sorted_ingredients_as_csv(self):
         """ Test the creation of a sorted csv string from whitespace separated string
@@ -40,3 +43,10 @@ class UtilsTests(TestCase):
         self.assertEqual(sorted_ingredients_as_csv(self.ingredients4), expected_ingredients_string)
         self.assertEqual(sorted_ingredients_as_csv(self.ingredients2), expected_ingredients_string)
 
+    def test_split_csv_into_list(self):
+        """ Test splitting csv string into a list """
+
+        expected_ingredients_list = ['ground beef', 'cumin', 'tomatoes', 'cheese', 'ground black pepper']
+
+        ingredients_str = 'ground beef, cumin, tomatoes, cheese, ground black pepper'
+        self.assertListEqual(split_csv_into_list(ingredients_str), expected_ingredients_list)
