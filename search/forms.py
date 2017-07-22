@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from urllib.parse import urlencode
 
-from common.utils import CommonUtils
+from common.utils import cleanup_ingredients
 
 class RecipeSearchForm(forms.Form):
     """Simple search form config, for validating against
@@ -43,7 +43,7 @@ class RecipeSearchForm(forms.Form):
             return render(request, context['template'], context)
 
         query_dict = {
-            'ingredients': CommonUtils.cleanup_ingredients(self.cleaned_data.get('ingredients')),
+            'ingredients': cleanup_ingredients(self.cleaned_data.get('ingredients')),
             'reverse': context['reverse'],
             'page_title': context['page_title']
         }
