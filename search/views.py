@@ -7,8 +7,7 @@ import pygal
 from pygal.style import CleanStyle
 
 from services.es_search import RecipeSearch
-from common.utils import lc_list_of_ingredients, sorted_ingredients_as_csv, \
-    split_csv_into_list, split_str_on_whitespace
+from common.utils import lc_list_of_ingredients, sorted_ingredients_as_csv, split_str_on_whitespace
 
 def percentage_of_ingredients_matched(query_params_ingredients):
     '''
@@ -25,16 +24,16 @@ def percentage_of_ingredients_matched(query_params_ingredients):
 
     def get_percentage_matched(recipe_ingredients):
         '''
+        Cycle through recipe ingredients, which may contain multi-word phrases like 'black pepper'
+        and for each of those check whether there's a user's search keyword match: increment the counter
+        for that recipe ingredient if so.
+        At the end we can create a set from the dict names to see the overall match of phrases
+        rather than single words.  This is more accurate.
 
         :param recipe_ingredients(str), from the hits returned by search
         :return: matched words(str), the percentage matched(float to 2 decimal places)
         '''
         recipe_ingredients = lc_list_of_ingredients(recipe_ingredients)
-        # Cycle through recipe ingredients, which may contain multi-word phrases like 'black pepper'
-        # and for each of those check whether there's a user's search keyword match: increment the 'hit'
-        # for that recipe ingredient if so.
-        # At the end we can create a set from the dict names to see the overall match of phrases
-        # rather than single words.  This is more accurate.
         matched_phrases = defaultdict(int)
         for recipe_ingredient in recipe_ingredients:
             for ingredient in query_params_ingredients_list:
