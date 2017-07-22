@@ -33,6 +33,16 @@ services:
     depends_on:
       - elasticsearch2
       - postgres
+  webapp:
+    build: .
+    volumes:
+      - .:/webapp
+    ports:
+      - "8000:8000"
+      - "8082:8082"
+    depends_on:
+      - elasticsearch2
+      - postgres
 
 volumes:
   esdata1:
