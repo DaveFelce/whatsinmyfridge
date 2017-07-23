@@ -2,7 +2,7 @@
 # Prepare log files and start outputting logs to stdout
 # mkdir -p /usr/local/var/log/uwsgi
 
-touch estateagent.log
+touch whatsinmyfridge.log
 chmod 644 whatsinmyfridge.log
 
 # Webapp commands
