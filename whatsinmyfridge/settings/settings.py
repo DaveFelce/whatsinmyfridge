@@ -13,8 +13,8 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -25,7 +25,7 @@ SECRET_KEY = 'jxtfv*%*==kjn#02n3o=^(#4cgcq^4-er@(^%idq4)at5c)=y0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0']
 
 
 # Application definition
@@ -87,23 +87,6 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'whatsinmyfridge',
-        'USER': 'whatsinmyfridge',
-        'PASSWORD': 'Cr33d3nc3',
-        'HOST': 'localhost',
-        'PORT': '5434',
-    },
-}
-
-SEARCH_SERVICE = {
-    'ES_HOST': 'localhost',
-    'ES_PORT': '9200',
-    'ES_USER': 'elastic',
-    'ES_PASSWORD': 'NXo9f3HaPrUq',
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
