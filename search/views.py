@@ -7,7 +7,8 @@ import pygal
 from pygal.style import CleanStyle
 
 from services.es_search import RecipeSearch
-from common.utils import lc_list_of_ingredients, sorted_ingredients_as_csv, split_str_on_whitespace
+from common.utils import lc_list_of_ingredients, sorted_ingredients_as_csv, \
+    split_str_on_whitespace, lc_str_of_ingredients
 
 def percentage_of_ingredients_matched(query_params_ingredients):
     '''
@@ -20,7 +21,7 @@ def percentage_of_ingredients_matched(query_params_ingredients):
 
     # Get the query params values, which don't change between calls and are hashable
     # Lower case the list so they are now separate keywords
-    query_params_ingredients_list = split_str_on_whitespace(query_params_ingredients)
+    query_params_ingredients_list = lc_str_of_ingredients(query_params_ingredients)
 
     def get_percentage_matched(recipe_ingredients):
         '''
