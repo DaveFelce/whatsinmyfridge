@@ -27,9 +27,21 @@ services:
     volumes:
       - esdata1:/usr/share/elasticsearch/data
     ports:
-      - 9200:9200
+      - 9201:9200
   logstash:
     build: logstash
+    depends_on:
+      - elasticsearch2
+      - postgres
+  webapp:
+    environment:
+      - DJANGO_LOCAL=0
+    build: .
+    volumes:
+      - .:/webapp
+    ports:
+      - "8000:8000"
+      - "8082:8082"
     depends_on:
       - elasticsearch2
       - postgres
