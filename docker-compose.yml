@@ -40,7 +40,7 @@ services:
     volumes:
       - .:/webapp
     ports:
-      - "8000:8000"
+      - "8001:8001"
       - "8082:8082"
     depends_on:
       - elasticsearch2
