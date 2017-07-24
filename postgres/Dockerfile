@@ -62,7 +62,7 @@ RUN mkdir -p "$PGDATA" && chown -R postgres:postgres "$PGDATA" && chmod 777 "$PG
 VOLUME /var/lib/postgresql/data
 
 COPY init1.sql docker-entrypoint-initdb.d/
-COPY init2.sql docker-entrypoint-initdb.d/
+# COPY init2.sql docker-entrypoint-initdb.d/
 # COPY init3.sql docker-entrypoint-initdb.d/
 
 COPY docker-entrypoint.sh /usr/local/bin/
