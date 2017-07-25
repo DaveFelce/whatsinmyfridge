@@ -18,6 +18,7 @@ SEARCH_SERVICE = {
     'ES_PORT': '9200',
     'ES_USER': 'elastic',
     'ES_PASSWORD': 'NXo9f3HaPrUq',
+    'ES_MAX_RESULTS': 12,
 }
 
 DEBUG = False

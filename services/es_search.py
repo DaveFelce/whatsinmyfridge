@@ -61,6 +61,8 @@ class RecipeSearch():
 
         # Prepare the search, using the prepared queries
         es_search = Search().using(self.client).query(q_ingredients)
+        # Max number of results, from settings
+        es_search = es_search[:settings.SEARCH_SERVICE['ES_MAX_RESULTS']]
 
         # Log the query_params and JSON query used
         logger.debug(json.dumps(search_params))
