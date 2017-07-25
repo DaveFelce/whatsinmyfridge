@@ -81,21 +81,24 @@ class ProcessRecipeSearch(View):
         # Create a gauge chart showing what percentage of ingredient keywords we matched, for each match
         gauge_chart = self._make_gauge_chart(query_params, recipes)
 
+        # Create a bar chart showing what percentage of ingredient keywords we matched, for each match
+        bar_chart = self._make_bar_chart(recipes)
+
         # Create a pie chart showing how Elasticsearch rated our matching recipes
         pie_chart = self._make_pie_chart(recipes)
 
         # Populate context var for rendering, with the charts we've created
         context = {
                     'recipes': recipes,
-                    'pie_chart': pie_chart.render_data_uri(),
                     'gauge_chart': gauge_chart.render_data_uri(),
+                    'bar_chart': bar_chart.render_data_uri(),
+                    'pie_chart': pie_chart.render_data_uri(),
                     'page_title': 'Recipe search results',
         }
         return render(request, 'recipes/search_results.html', context)
 
     def _make_gauge_chart(self, query_params, recipes):
         """
-
         :param query_params(query dict):
         :param recipes(list of dicts of hits returned from Elasticsearch):
         :return(obj): gauge_chart
@@ -124,6 +127,28 @@ class ProcessRecipeSearch(View):
             }])
 
         return gauge_chart
+
+    def _make_bar_chart(self, recipes):
+        """
+
+        :param recipes(list of dicts of hits returned from search):
+        :return(obj): bar_chart
+        """
+
+        bar_chart = pygal.Bar(width=1300, height=800, style=CleanStyle)
+        for recipe in recipes:
+            bar_chart.add({
+                'title': recipe['name'],
+                'tooltip': 'Has ingredients: ' + sorted_ingredients_as_csv(recipe['ingredients']),
+            }, [{
+                'value': int(round(recipe['score'] * 100)),
+                'xlink': {
+                    'href': recipe['url'],
+                    'target': '_blank'
+                },
+            }])
+
+        return bar_chart
 
     def _make_pie_chart(self, recipes):
         """
