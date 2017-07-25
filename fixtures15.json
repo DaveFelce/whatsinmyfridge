@@ -1,0 +1,67 @@
+{
+    "title": "Recipe Puppy",
+    "version": 0.1,
+    "href": "http://www.recipepuppy.com/",
+    "results": [
+        {
+            "title": "Gold Soup",
+            "href": "http://www.recipezaar.com/Gold-Soup-235536",
+            "ingredients": "pumpkin puree, carrot, garlic, onions, parsley, black pepper, red lentils, vegetable broth, water",
+            "thumbnail": "http://img.recipepuppy.com/673801.jpg"
+        },
+        {
+            "title": "Garlic Soup That Cures What Ails You (Aka Hangover Soup)",
+            "href": "http://www.recipezaar.com/Garlic-Soup-That-Cures-What-Ails-You-Aka-Hangover-Soup-150699",
+            "ingredients": "avocado, thyme, sage, egg yolks, parsley, garlic bread, garlic, pasta, parsley, black pepper, cheddar cheese, tomato juice, vegetable broth, cloves",
+            "thumbnail": "http://img.recipepuppy.com/647644.jpg"
+        },
+        {
+            "title": "Authentic Jewish Yiddish Chicken Soup",
+            "href": "http://www.recipezaar.com/Authentic-Jewish-Yiddish-Chicken-Soup-345626",
+            "ingredients": "carrot, celery, chicken soup, dill weed, parsley, onions, parsnip, black pepper, salt, water, chicken",
+            "thumbnail": ""
+        },
+        {
+            "title": "Barley Mountain Soup Zuppa Dorzo Con Salsiccia Recipe",
+            "href": "http://www.grouprecipes.com/71385/barley-mountain-soup-zuppa-dorzo-con-salsiccia.html",
+            "ingredients": "potato, water, barley, buttermilk, carrot, garlic, rosemary, olive oil, onions, black pepper, smoked ham, parsley",
+            "thumbnail": "http://img.recipepuppy.com/210260.jpg"
+        },
+        {
+            "title": "Cream of Garden Tomato Soup - Pressure Cooker - West",
+            "href": "http://www.recipezaar.com/Cream-of-Garden-Tomato-Soup-Pressure-Cooker-West-186316",
+            "ingredients": "black pepper, butter, chicken broth, thyme, heavy cream, salt, tomato, vegetable oil, yellow onions",
+            "thumbnail": "http://img.recipepuppy.com/331622.jpg"
+        },
+        {
+            "title": "Cuban Garlic Soup (Sopa De Ajo)",
+            "href": "http://www.recipezaar.com/Cuban-Garlic-Soup-Sopa-De-Ajo-338866",
+            "ingredients": "bay leaf, chicken broth, eggs, french bread, garlic, olive oil, paprika, parsley, salt, sherry, tomato",
+            "thumbnail": ""
+        },
+        {
+            "title": "Korean Bean Sprout Soup Kong Na Mul Guk Recipe",
+            "href": "http://www.grouprecipes.com/86359/korean-bean-sprout-soup-kong-na-mul-guk.html",
+            "ingredients": "sesame seed, bean sprouts, anchovies, broth, green onion, water, crabs, garlic, salt",
+            "thumbnail": "http://img.recipepuppy.com/409848.jpg"
+        },
+        {
+            "title": "Sweet Potato & Pear Soup",
+            "href": "http://www.recipezaar.com/Sweet-Potato-Pear-Soup-115291",
+            "ingredients": "butter, chicken broth, mint, greek yogurt, pear, sweet potato, white wine, yellow onions",
+            "thumbnail": "http://img.recipepuppy.com/38441.jpg"
+        },
+        {
+            "title": "Korean Seaweed Soup-miyeok Guk Recipe",
+            "href": "http://www.grouprecipes.com/63833/korean-seaweed-soup-miyeok-guk.html",
+            "ingredients": "dark sesame oil, garlic, soup, beef, beef broth, salt",
+            "thumbnail": "http://img.recipepuppy.com/222685.jpg"
+        },
+        {
+            "title": "Erwtensoep - Dutch Pea Soup",
+            "href": "http://www.recipezaar.com/Erwtensoep-Dutch-Pea-Soup-44497",
+            "ingredients": "bacon, bouillon, celeriac, celery, peas, parsley, leek, salt, sausage, water",
+            "thumbnail": "http://img.recipepuppy.com/546838.jpg"
+        }
+    ]
+}
