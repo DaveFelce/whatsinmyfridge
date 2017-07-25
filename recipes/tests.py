@@ -2,6 +2,7 @@
 
 from django.shortcuts import get_object_or_404
 from django.utils.six import BytesIO
+from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.parsers import JSONParser
 from rest_framework.renderers import JSONRenderer
@@ -23,14 +24,7 @@ class RecipesTests(APITransactionTestCase):
     reset_sequences = True # So we can check an auto-incremented pk further down
 
     def setUp(self):
-        """Set up some commonly needed attributes
-
-        Attributes:
-            person(people.Details obj): mock person used in tests in this file
-            place(Property obj): mocked up property
-            properties_fixture(list with single dict): used to test the results pages' content
-
-        """
+        """ Set up some commonly needed attributes """
 
         self.recipe1 = mommy.make('recipes.Recipe')
         self.recipe2 = mommy.make('recipes.Recipe')
@@ -97,7 +91,7 @@ class RecipesTests(APITransactionTestCase):
         setattr(self.recipe3, 'name', 'testname_recipe3')
 
         self.recipe3.save()
-        response = self.client.get('/recipes/list/', format='json')
+        response = self.client.get(reverse("recipes:recipelist"), format='json')
         data = response.data
         self.assertEqual(data[2]['name'], 'testname_recipe3')
 
@@ -107,7 +101,7 @@ class RecipesTests(APITransactionTestCase):
         """
 
         # Create a new object with a POST to the REST API
-        response = self.client.post('/recipes/list/', json.loads(self.recipe4_json), format='json')
+        response = self.client.post(reverse("recipes:recipelist"), json.loads(self.recipe4_json), format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         # Test retrieval of the new obj using DB
@@ -116,12 +110,12 @@ class RecipesTests(APITransactionTestCase):
         self.assertEqual(Recipe.objects.count(), 4)
 
         # Test retrieval of new obj using GET for list of all objects
-        response = self.client.get('/recipes/list/', format='json')
+        response = self.client.get(reverse("recipes:recipelist"), format='json')
         data_as_ordered_dict = response.data
         self.assertEqual(data_as_ordered_dict[3]['name'], 'Three In One Onion Dip Recipe')
 
         # Test retrieval of new obj using GET for single object
-        response = self.client.get('/recipes/detail/4/', format='json')
+        response = self.client.get(reverse("recipes:recipedetail", kwargs={'pk':4}), format='json')
         data_as_dict = response.data
         self.assertEqual(data_as_dict['ingredients'], 'cheddar cheese, cheese, green onion')
 
