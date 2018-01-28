@@ -5,6 +5,8 @@ services:
     environment:
       - POSTGRES_PASSWORD=jT7I6MZsakUj
     build: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
     ports:
       - "5434:5432"
   elasticsearch2:
@@ -48,4 +50,6 @@ services:
 
 volumes:
   esdata1:
+    driver: local
+  pgdata:
     driver: local
