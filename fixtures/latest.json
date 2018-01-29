@@ -678,7 +678,7 @@
     "model": "recipes.recipe",
     "pk": 76,
     "fields": {
-        "name": "Fr&uuml;chtebrot Mit Backobst (Fruit Bread With Mixed Dried Frui",
+        "name": "Fr\u00fcchtebrot Mit Backobst (Fruit Bread With Mixed Dried Frui",
         "ingredients": "baking powder, currant, eggs, lemon zest, dried fruit, raisins, bread flour, sugar, butter",
         "url": "http://www.recipezaar.com/Fruumlchtebrot-Mit-Backobst-Fruit-Bread-With-Mixed-Dried-Frui-141570"
     }
@@ -1074,7 +1074,7 @@
     "model": "recipes.recipe",
     "pk": 120,
     "fields": {
-        "name": "Cheddar Squash &amp; Pasta",
+        "name": "Cheddar Squash & Pasta",
         "ingredients": "cheddar cheese, bread crumbs, nonstick cooking spray, flour, margarine, milk, pasta, salt, summer squash",
         "url": "http://www.recipezaar.com/Cheddar-Squash-Pasta-193175"
     }
