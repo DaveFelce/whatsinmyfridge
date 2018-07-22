@@ -1,0 +1,113 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "environment": [
+                {
+                    "name": "cluster.name",
+                    "value": "docker-cluster"
+                },
+                {
+                    "name": "bootstrap.memory_lock",
+                    "value": "true"
+                },
+                {
+                    "name": "ES_JAVA_OPTS",
+                    "value": "-Xms1g -Xmx1g"
+                }
+            ],
+            "essential": false,
+            "image": "docker.elastic.co/elasticsearch/elasticsearch:5.2.0",
+            "memory": 2048,
+            "mountPoints": [
+                {
+                    "containerPath": "/usr/share/elasticsearch/data",
+                    "sourceVolume": "Esdata1"
+                }
+            ],
+            "name": "elasticsearch2",
+            "portMappings": [
+                {
+                    "containerPort": 9200,
+                    "hostPort": 9201
+                }
+            ]
+        },
+        {
+            "essential": true,
+            "name": "logstash",
+            "image": "davefelce/whatsinmyfridge_logstash",
+            "memory": 500,
+            "links": [
+                "elasticsearch2",
+                "postgres"
+            ]
+        },
+        {
+            "environment": [
+                {
+                    "name": "POSTGRES_PASSWORD",
+                    "value": "jT7I6MZsakUj"
+                }
+            ],
+            "essential": true,
+            "image": "davefelce/whatsinmyfridge_postgres",
+            "memoryReservation": 500,
+            "mountPoints": [
+                {
+                    "containerPath": "/var/lib/postgresql/data",
+                    "sourceVolume": "Pgdata"
+                }
+            ],
+            "name": "postgres",
+            "hostname": "postgres",
+            "portMappings": [
+                {
+                    "containerPort": 5432,
+                    "hostPort": 5434
+                }
+            ]
+        },
+        {
+            "environment": [
+                {
+                    "name": "DJANGO_LOCAL",
+                    "value": "0"
+                }
+            ],
+            "essential": true,
+            "image": "davefelce/whatsinmyfridge_webapp",
+            "memoryReservation": 128,
+            "name": "webapp",
+            "links": [
+                "elasticsearch2",
+                "postgres"
+            ],
+            "portMappings": [
+                {
+                    "containerPort": 8001,
+                    "hostPort": 8001
+                },
+                {
+                    "containerPort": 8082,
+                    "hostPort": 8082
+                }
+            ]
+        }
+    ],
+    "family": "",
+    "volumes": [
+        {
+            "host": {
+                "sourcePath": "pgdata"
+            },
+            "name": "Pgdata"
+        },
+        {
+            "host": {
+                "sourcePath": "esdata1"
+            },
+            "name": "Esdata1"
+        }
+    ]
+}

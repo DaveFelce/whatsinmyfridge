@@ -25,7 +25,7 @@ SECRET_KEY = 'jxtfv*%*==kjn#02n3o=^(#4cgcq^4-er@(^%idq4)at5c)=y0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', 'david-felce-whatsinmyfridge.eu-west-2.elasticbeanstalk.com']
 
 
 # Application definition
