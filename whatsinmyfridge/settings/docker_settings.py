@@ -14,7 +14,7 @@ DATABASES = {
 }
 
 SEARCH_SERVICE = {
-    'ES_HOST': 'elasticsearch2',
+    'ES_HOST': 'elasticsearch',
     'ES_PORT': '9200',
     'ES_USER': 'elastic',
     'ES_PASSWORD': 'NXo9f3HaPrUq',
