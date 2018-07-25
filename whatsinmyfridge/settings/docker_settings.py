@@ -19,6 +19,7 @@ SEARCH_SERVICE = {
     'ES_USER': 'elastic',
     'ES_PASSWORD': 'NXo9f3HaPrUq',
     'ES_MAX_RESULTS': 12,
+    'ES_INDEX': 'mysites_recipe',
 }
 
-DEBUG = False
+DEBUG = True

@@ -60,7 +60,7 @@ class RecipeSearch():
         # q_name = Q("match", name=search_params['ingredients'])  # 'name' will add to score but is not essential
 
         # Prepare the search, using the prepared queries
-        es_search = Search().using(self.client).query(q_ingredients)
+        es_search = Search(index=settings.SEARCH_SERVICE['ES_INDEX']).using(self.client).query(q_ingredients)
         # Max number of results, from settings
         es_search = es_search[:settings.SEARCH_SERVICE['ES_MAX_RESULTS']]
 
