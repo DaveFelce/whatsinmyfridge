@@ -1,4 +1,4 @@
-# whatsinmyfridge
+# Whatsinmyfridge
 Search for recipes for the ingredients scattered around your fridge and cupboards
 
 Enter some search terms and observe the beautiful graphs!  
