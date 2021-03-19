@@ -16,7 +16,7 @@ django-appconf==1.0.2
 django-bootstrap3==7.1.0
 django-imagekit==3.3
 django-thumbs==0.4
-djangorestframework==3.5.3
+djangorestframework==3.11.2
 docker==2.0.2
 docker-compose==1.10.1
 docker-pycreds==0.2.1
